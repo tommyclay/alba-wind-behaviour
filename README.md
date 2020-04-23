@@ -24,8 +24,6 @@ Input data:
 
 BothSites_forwindexperienced.csv - data to load into wind_experienced_analysis_plotting.r code. Columns are: "ID" - factor encoding individual bird identity; "TripID" - factor encoding trip identity; "Site" - factor with two levels: "Crozet" or "South Georgia"; "Sex" - factor with two levels: "F" (female) or "M" (male); Year - years from 2010-2016; WindSp - numeric value of wind speed for tracking location; WindDir -numeric value of wind direction for tracking location.
 
-ID	sex	x	y	ws	dir	lod
-
 GPS_Crozet_2010-2016.csv - Crozet data to load into hmm codes. Columns are: "ID" - factor encoding individual trip identity; "sex" - factor with two levels: "F" (female) or "M" (male); x - longitude; y - latitude; ws - numeric value of wind speed for tracking location; dir - numeric value of wind direction relative to bird trajectory for each location; lod - factor with two levels: "L" (daylight) or "D" (darkness).
 
 GPS_SouthGeorgia_2012.csv - South Georgia to load into hmm codes. Columns are: "ID" - factor encoding individual trip identity; "sex" - factor with two levels: "F" (female) or "M" (male); x - longitude; y - latitude; ws - numeric value of wind speed for tracking location; dir - numeric value of wind direction relative to bird trajectory for each location; lod - factor with two levels: "L" (daylight) or "D" (darkness).
