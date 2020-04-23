@@ -1,0 +1,41 @@
+"","Model","Formula","AIC"
+"13","M13","ws + ws:dir + dir + lod",24072.6699445619
+"26","M26","ws + lod + sex + dir + ws:dir",24084.6699187374
+"22","M22","ws:lod + ws + lod + ws:dir + dir + ws:dir:lod",24088.5296018914
+"3","M3","ws + dir",24096.0749898947
+"34","M34","ws:lod + ws + lod + sex + dir + ws:lod:dir + ws:dir",24100.5296018914
+"9","M9","ws + dir + sex",24108.0749898947
+"30","M30","ws:sex + ws + sex + lod + dir + ws:sex:dir + ws:dir",24108.6699187374
+"38","M38","ws:lod + ws:sex + ws + sex + lod + ws:lod:dir + ws:sex:dir + ws:dir",24109.7876895425
+"12","M12","ws + lod",24122.4144979999
+"21","M21","ws:lod + ws + lod",24127.2670070597
+"14","M14","ws + I(ws^2) + lod",24132.8136790991
+"25","M25","ws + lod + sex",24134.4144979999
+"7","M7","lod",24134.8015091957
+"18","M18","ws:sex + ws:dir + ws + dir + sex + ws:sex:dir",24136.1396904688
+"33","M33","ws:lod + ws + lod + sex",24139.2670070597
+"2","M2","ws",24144.5363323866
+"27","M27","ws + I(ws^2) + lod + sex",24144.8136790991
+"29","M29","ws:sex + ws + sex + lod",24146.4144979999
+"16","M16","lod + sex",24146.8015091957
+"23","M23","ws:lod + I(ws^2):lod + ws + I(ws^2) + lod",24146.87200228
+"37","M37","ws:lod + ws:sex + ws + sex + lod",24151.2670070597
+"24","M24","ws:lod + I(ws^2):lod + ws + I(ws^2) + lod + dir + ws:lod:dir + I(ws^2):lod:dir + ws:dir + I(ws^2):dir",24153.6504871454
+"4","M4","(ws + I(ws^2))",24155.2363191228
+"1","M1","1",24155.7429608999
+"8","M8","ws + sex",24156.5363323866
+"35","M35","ws:lod + I(ws^2):lod + ws + I(ws^2) + lod + sex",24158.87200228
+"36","M36","ws:lod + I(ws^2):lod + ws + I(ws^2) + lod + sex + dir + ws:lod:dir + I(ws^2):lod:dir + ws:dir + I(ws^2):dir",24165.6504871454
+"10","M10","ws + I(ws^2) + sex",24167.2363191228
+"6","M6","sex",24167.7429608898
+"17","M17","ws:sex + ws + sex",24168.5363323866
+"31","M31","ws:sex + I(ws^2):sex + ws + I(ws^2) + sex + lod",24168.8136790991
+"39","M39","ws:lod + I(ws^2):lod + ws:sex + I(ws^2):sex + ws + I(ws^2) + lod + sex",24182.87200228
+"5","M5","ws + I(ws^2) + dir + ws:dir + I(ws^2):dir",24187.4951997437
+"19","M19","ws:sex + I(ws^2):sex + ws + I(ws^2) + sex",24191.2363191228
+"15","M15","ws + I(ws^2) + dir + lod + ws:dir + I(ws^2):dir",24199.4950514533
+"11","M11","ws + I(ws^2) + dir + sex + ws:dir + I(ws^2):dir",24199.4951997437
+"28","M28","ws + I(ws^2) + lod + sex + dir + ws:dir + I(ws^2):dir",24211.4950514584
+"40","M40","ws:lod + I(ws^2):lod + ws:sex + I(ws^2):sex + ws + I(ws^2) + lod + sex + dir + ws:dir + I(ws^2):dir + I(ws^2):sex:dir + ws:lod:dir + I(ws^2):lod:dir + ws:sex:dir",24213.6504871454
+"20","M20","ws:sex + I(ws^2):sex + ws + I(ws^2) + sex + dir + ws:dir + I(ws^2):dir + ws:sex:dir + I(ws^2):sex:dir",24247.4951997437
+"32","M32","ws:sex + I(ws^2):sex + ws + I(ws^2) + sex + lod + dir + ws:sex:dir + I(ws^2):sex:dir + ws:dir + I(ws^2):dir",24259.4950514584
