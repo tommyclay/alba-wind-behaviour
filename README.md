@@ -41,6 +41,10 @@ In the hmms sub-folder:
  
 These are the datasets used in the analysis, in a format that makes it straightforward to fit the mixed models and HMMs.
 
+
+    [RJ2]: # (Tommy, the description in the first file is not clear. Are these average wind values?)
+
+
 - **BothSites_forwindexperienced.csv**: data to load into the wind_experienced_analysis_plotting.r code. The columns are: 
     - ID - factor encoding individual bird identity; 
     - TripID - factor encoding trip identity; 
@@ -49,11 +53,6 @@ These are the datasets used in the analysis, in a format that makes it straightf
     - Year - years from 2010-2016; 
     - WindSp - it takes numeric values of wind speed for tracking location; 
     - WindDir - it takes numeric values of wind direction for tracking location.
-
-
-    [RJ]: # (Tommy, this description is not clear. Are these average wind values?)
-
-
 
 - **GPS_Crozet_2010-2016.csv**: Crozet data to load into hmm codes. Columns are: 
     - ID - factor encoding individual trip identity; 
