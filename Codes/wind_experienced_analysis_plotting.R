@@ -1,8 +1,8 @@
 
 library(lme4)
-library(MuMIn)
+library(MuMIn) # Multi-Model Inference
 library(ggplot2)
-library(visreg)
+library(visreg) # Visualization of regression functions
 library(plyr)
 library(circular)
 
@@ -23,8 +23,9 @@ dat <- read.csv(file = path, na.strings = "NA")
 
 
 hist(dat$WindSp)
-# looks great, Gaussian distribution fine
+# looks great, except for a bit of skewness on the right, Gaussian distribution could be reasonable
 
+# transforming into factor variables
 dat$Year <- as.factor(as.character(dat$Year))
 table(dat$Year)
 dat$ID <- as.factor(as.character(dat$ID))
@@ -33,8 +34,8 @@ dat$Site <- as.factor(as.character(dat$Site))
 dat$Sex <- as.factor(as.character(dat$Sex))
 
 wind.lm <- lmer(WindSp ~ Site*Sex + Year + (1|ID/TripID), data = dat)
-wind.lm2 <- update(wind.lm, REML = FALSE)
-options(na.action = "na.fail")
+wind.lm2 <- update(wind.lm, REML = FALSE) 
+options(na.action = "na.fail") # RJ: Why fail? NAs would mean that something went wrong with the data?
 m_set <- dredge(wind.lm2)
 m_set
 # Model selection table 
@@ -49,7 +50,7 @@ m_set
 
 # best model is full model
 visreg(wind.lm)
-# from looking crozet higher than south georgia
+# from looking crozet higher than south georgia # RJ: What does this mean?
 # males experience faster wind speeds than females
 
 # plotting residuals
@@ -85,7 +86,12 @@ summary(wind.lm)
 pred.df <- expand.grid(Sex = levels(dat$Sex), Site = levels(dat$Site), ID = levels(dat$ID),
                        TripID = levels(dat$TripID), Year = levels(dat$Year)) 
 pred.df2 <- predict(wind.lm, newdata = pred.df, re.form = NA, se.fit = TRUE)
+# RJ:
+# Warning message:
+# In predict.merMod(wind.lm, newdata = pred.df, re.form = NA, se.fit = TRUE) :
+#   unused arguments ignored
 pred.df$fit <- pred.df2$fit
+# Error in pred.df2$fit : $ operator is invalid for atomic vectors
 pred.df$se.lwr <- pred.df$fit -pred.df2$se.fit
 pred.df$se.upr <- pred.df$fit +pred.df2$se.fit
 pred.df$ci.lwr <- pred.df$fit - pred.df2$se.fit*1.96
