@@ -129,7 +129,11 @@ p + geom_errorbar(aes(ymin=ci.lwr, ymax=ci.upr, fill = Sex), width=.45, position
 
 #### 3A. SUMMARIZING MEDIAN WIND PER TRIP #####
 
-dat$WindDir2 <- circular(dat$WindDir,units = "degrees", template =  "geographics", zero = 0, rotation = "clock")
+dat$WindDir2 <- circular(dat$WindDir, 
+                         type = "angles", units = "degrees", 
+                         zero = 0,
+                         rotation = "counter")
+                         
 trips.sum <- ddply(dat,.(Site, Sex, TripID), summarize, MedDir = median.circular(WindDir2))
 hist(as.numeric(trips.sum$MedDir))
 # checking that values are within -180 and 180
@@ -139,10 +143,12 @@ range(as.numeric(trips.sum$MedDir))
 ##### 3B. COMPARING BY SITE ######
 
 
-cro.df <- subset(trips.sum, Site == "Crozet",)
-cro.dir <- circular(cro.df$MedDir,units = "degrees", template =  "geographics", zero = 0, rotation = "clock")
-sg.df <- subset(trips.sum, Site == "South Georgia",)
-sg.dir <- circular(sg.df$MedDir,units = "degrees", template =  "geographics", zero = 0, rotation = "clock")
+cro.df <- subset(trips.sum, Site == "Crozet")
+cro.dir <- cro.df$MedDir
+
+sg.df <- subset(trips.sum, Site == "South Georgia")
+sg.dir <- sg.df$MedDir
+  
 
 # Watson test
 watson.two.test(cro.dir,sg.dir, alpha=0)
@@ -158,18 +164,18 @@ watson.two.test(cro.dir,sg.dir, alpha=0.1)
 mle.vonmises(cro.dir)
 # mu: 100.4  ( 2.416 )
 # kappa: 2.218  ( 0.145 )
-mle.vonmises.bootstrap.ci(cro.dir, alpha = 0.05)
+mle.vonmises.bootstrap.ci(cro.dir, alpha = 0.05, mu = mle.res$mu, bias = TRUE, reps = 10000, control.circular = list(units="degrees", zero = 0, rotation = "counter", type = "angles"))
 # Bootstrap Confidence Intervals for Mean Direction and Concentration 
 # Confidence Level:   95 % 
-# Mean Direction:            Low = -256.02   High = -263.44 
-# Concentration Parameter:   Low = 1.88   High = 2.66 
-
-# when it gives values outside of -180 to 180 add or take away 360
-conv_180 <- function(x) { if (x < -180) { x <- x+360} else if (x > 180) { x <- x-360}
-  return(x)
-}
-conv_180(-256.02) # 103.98
-conv_180(-263.44) # 96.56
+# Mean Direction:            Low = 96.59   High = 104.05 
+# Concentration Parameter:   Low = 1.86   High = 2.65 
+# 
+# # when it gives values outside of -180 to 180 add or take away 360
+# conv_180 <- function(x) { if (x < -180) { x <- x+360} else if (x > 180) { x <- x-360}
+#   return(x)
+# }
+# conv_180(-256.02) # 103.98
+# conv_180(-263.44) # 96.56
 
 # function to convert to where wind is coming FROM on 0-360 scale
 dir_conv <- function(x) { if (x > 0) { dir <- 360-(180-x)} else { dir <- 180+x }
@@ -186,11 +192,11 @@ mle.vonmises(sg.dir)
 mle.vonmises.bootstrap.ci(sg.dir, alpha = 0.05)
 # Bootstrap Confidence Intervals for Mean Direction and Concentration 
 # Confidence Level:   95 % 
-# Mean Direction:            Low = -249.78   High = -264.69 
-# Concentration Parameter:   Low = 4.02   High = 11.07 
+# Mean Direction:            Low = 95.05   High = 109.27 
+# Concentration Parameter:   Low = 3.98   High = 11.45 
 
-conv_180(-249.78) # 110.22
-conv_180(-264.69) # 95.31
+# conv_180(-249.78) # 110.22
+# conv_180(-264.69) # 95.31
 
 # to convert to where wind is coming FROM on 0-360 scale
 dir_conv(102.4) # 282.4
@@ -202,27 +208,26 @@ dir_conv(95.31) # 275.31
 par(mfcol=c(1,2))
 rose.diag(cro.dir, bins = 50, main = "Crozet")
 rose.diag(sg.dir, bins=50, main = "South Georgia")
-
-
+# RJ: DOES IT MAKE SENSE TO PLOT THEM DIRECTLY IN A 0 TO 360 GRAPH?
 
 ##### 3C. CROZET BY SEX #####
 
 
-cro.m.df <- subset(cro.df, Sex == "M",)
+cro.m.df <- subset(cro.df, Sex == "M")
 cro.m.dir <- cro.m.df$MedDir
-cro.f.df <- subset(cro.df, Sex == "F",)
+cro.f.df <- subset(cro.df, Sex == "F")
 cro.f.dir <- cro.f.df$MedDir
 
 
 watson.two.test(cro.m.dir,cro.f.dir, alpha=0)
-# Test Statistic: 0.3463 
+# Test Statistic: 0.3466
 # 0.001 < P-value < 0.01 
 watson.two.test(cro.m.dir,cro.f.dir, alpha=0.01)
-# Test Statistic: 0.3463 
+# Test Statistic: 0.3466 
 # Level 0.01 Critical Value: 0.268 
 # Reject Null Hypothesis 
 watson.two.test(cro.m.dir,cro.f.dir, alpha=0.001)
-# Test Statistic: 0.3463 
+# Test Statistic: 0.3466
 # Level 0.001 Critical Value: 0.385 
 # Do Not Reject Null Hypothesis 
 
@@ -235,11 +240,11 @@ mle.vonmises(cro.m.dir)
 mle.vonmises.bootstrap.ci(cro.m.dir, alpha = 0.05)
 # Bootstrap Confidence Intervals for Mean Direction and Concentration 
 # Confidence Level:   95 % 
-# Mean Direction:            Low = -255.13   High = -263.19 
-# Concentration Parameter:   Low = 2.49   High = 4.52 
-
-conv_180(-255.13) # 104.87
-conv_180(-263.19 ) # 96.81
+# Mean Direction:            Low = 96.32   High = 104.91 
+# Concentration Parameter:   Low = 2.55   High = 4.48 
+# 
+# conv_180(-255.13) # 104.87
+# conv_180(-263.19 ) # 96.81
 
 # to convert to where wind is coming FROM on 0-360 scale
 dir_conv(101) # 281
@@ -253,10 +258,11 @@ mle.vonmises(cro.f.dir)
 mle.vonmises.bootstrap.ci(cro.f.dir, alpha = 0.05)
 # Bootstrap Confidence Intervals for Mean Direction and Concentration 
 # Confidence Level:   95 % 
-# Mean Direction:            Low = 106.38   High = 92.72 
-# Concentration Parameter:   Low = 1.29   High = 2.12 
+# Mean Direction:            Low = 93.18   High = 106.06 
+# Concentration Parameter:   Low = 1.29   High = 2.1 
 
-# values are between -180 and 180 so don't need to convert
+# values are between -180 and 180 so don't need to convert. 
+# RJ: Yeah but your low value was higher than the high value. That was weird.
 
 # to convert to where wind is coming FROM on 0-360 scale
 dir_conv(99.52) # 279.52
@@ -267,7 +273,7 @@ dir_conv(92.72) # 272.72
 par(mfcol=c(1,2))
 rose.diag(cro.m.dir, bins = 50, main = "Male")
 rose.diag(cro.f.dir, bins=50, main = "Female")
-
+# RJ: Same question than before
 
 
 
@@ -276,9 +282,9 @@ rose.diag(cro.f.dir, bins=50, main = "Female")
 
 
 
-sg.m.df <- subset(sg.df, Sex == "M",)
+sg.m.df <- subset(sg.df, Sex == "M")
 sg.m.dir <- sg.m.df$MedDir
-sg.f.df <- subset(sg.df, Sex == "F",)
+sg.f.df <- subset(sg.df, Sex == "F")
 sg.f.dir <- sg.f.df$MedDir
 
 watson.two.test(sg.m.dir,sg.f.dir, alpha=0)
@@ -296,10 +302,12 @@ mle.vonmises(sg.m.dir)
 mle.vonmises.bootstrap.ci(sg.m.dir, alpha = 0.05)
 # Bootstrap Confidence Intervals for Mean Direction and Concentration 
 # Confidence Level:   95 % 
-# Mean Direction:            Low = 109.76   High = 91.08 
-# Concentration Parameter:   Low = 4.17   High = 14.73 
+# Mean Direction:            Low = 91.54   High = 109.89 
+# Concentration Parameter:   Low = 4.05   High = 15.59 
 
 # values are between -180 and 180 so don't need to convert
+# RJ: Yeah but your low value was higher than the high value. That was weird.
+
 
 # to convert to where wind is coming FROM on 0-360 scale
 dir_conv(99.94) # 279.94
@@ -313,10 +321,11 @@ mle.vonmises(sg.f.dir)
 mle.vonmises.bootstrap.ci(sg.f.dir, alpha = 0.05)
 # Bootstrap Confidence Intervals for Mean Direction and Concentration 
 # Confidence Level:   95 % 
-# Mean Direction:            Low = 115.69   High = 92.08 
-# Concentration Parameter:   Low = 2.84   High = 15.35 
+# Mean Direction:            Low = 92.75   High = 115.08 
+# Concentration Parameter:   Low = 2.95   High = 14.3 
 
 # values are between -180 and 180 so don't need to convert
+# RJ: Same thing here.
 
 # to convert to where wind is coming FROM on 0-360 scale
 dir_conv(105.4) # 285.4
@@ -327,6 +336,6 @@ dir_conv(92.08) # 272.08
 par(mfcol=c(1,2))
 rose.diag(sg.m.dir, bins = 50, main = "Male")
 rose.diag(sg.f.dir, bins=50, main = "Female")
-
+# Same question. Not sure this is OK. 
 
 
