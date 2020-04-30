@@ -3,8 +3,14 @@ library(ggplot2)
 library(plyr)
 
 
-# AIM OF SCRIPT - to run all combinations of hmms based on predictors specified in Section 2.5 of Methods and outputting models, AIC tables and goodness of fit and
-# autocorrelation plots
+# AIM OF SCRIPT - to run all combinations of hmms based on predictors specified in Section 2.5 of the manuscript and outputting models, AIC tables and goodness of fit and autocorrelation plots
+
+# The graphs will be stored in a "Plots" folder.
+# First, we make sure that we have it. Else, we create it.
+out.path <- "./Plots/"
+if (dir.exists(out.path) == FALSE){
+  dir.create(out.path)
+}
 
 
 ############# 1 - RUNNING ALL COVARIATE COMBINATIONS OF HMMS ###############
@@ -23,14 +29,15 @@ nlevels(sg$ID) # 38
 
 #### As it takes a very long time (i.e hours) to run on the full datasets - to test code we'll subset to 2 individuals per sex  ##### 
 
-males <- subset(sg, sex == "M",)
+set.seed(1) # setting seed only to get comparable results. For "real" randomization, you should delete this line
+males <- subset(sg, sex == "M")
 males$ID <- as.factor(as.character(males$ID))
-females <- subset(sg, sex == "F",)
+females <- subset(sg, sex == "F")
 females$ID <- as.factor(as.character(females$ID))
 m.ids <- sample(levels(males$ID), 2, replace = FALSE)
 f.ids <- sample(levels(females$ID), 2, replace = FALSE)
 ids <- c(m.ids, f.ids)
-sg <- subset(sg, ID %in% ids,)
+sg <- subset(sg, ID %in% ids)
 sg$sex <- as.factor(as.character(sg$sex))
 sg$ID <- as.factor(as.character(sg$ID))
 nlevels(sg$ID) # 4
@@ -49,7 +56,10 @@ scale_0 <- c(5.59, 6.47, 0.32)
 stepPar0 <- c(shape_0,scale_0)
 
 # artifact for zero step lengths of which there are only 2 values
+# (remember it's best to use the zeromass parameter)
 table(which(dat$step == 0))
+# RJ: Tommy, I actually get
+# < table of extent 0 > so no 0's
 ind_zero <- which(dat$step == 0)
 if (length(ind_zero)>0){
   dat$step[ind_zero] <- runif(length(ind_zero))/10000
@@ -79,16 +89,16 @@ m1 <- fitHMM(data=dat, nbStates=3,
              Par0=list(step=stepPar0, angle=anglePar0),
              estAngleMean = list(angle=TRUE),
              stateNames = stateNames)
-# store model as an .rdata object so you don't have to run from scratch each time
+# store model as an .Rdata object so you don't have to run from scratch each time
 file.out <- paste0("./Data_outputs/", paste0("SG_mod_", 1, ".RData"))
 save(m1, file = file.out)
 
 
 
-####### SETTING UP FORMULA AND PAR0 FOR ALL COMBINATIONS OF MODELS ##########
+####### SETTING UP FORMULA AND INITIAL VALUES FOR ALL COMBINATIONS OF MODELS ##########
 
 
-# The following code manually specifies each of 40 covariate combinations tested, which is detailed Methods section 2.5 of paper
+# The following code manually specifies each of 40 covariate combinations tested, which are detailed in the Methods section 2.5 of paper
 formula <- list()	
 formula[[2]] <- ~ ws	
 formula[[3]] <- ~ ws + dir
@@ -130,7 +140,7 @@ formula[[38]] <- ~  ws:lod + ws:sex + ws + sex + lod + ws:lod:dir + ws:sex:dir +
 formula[[39]] <- ~  ws:lod + I(ws^2):lod + ws:sex + I(ws^2):sex + ws + I(ws^2) + lod + sex	
 formula[[40]] <- ~  ws:lod + I(ws^2):lod + ws:sex + I(ws^2):sex + ws + I(ws^2) + lod + sex + dir + ws:dir + I(ws^2):dir + I(ws^2):sex:dir + ws:lod:dir + I(ws^2):lod:dir + ws:sex:dir 
 
-# this function gets starting values for each model from existing null model fit for a specified covariate formula
+# this function gets starting values for each model from the existing null model fit (m1) for a specified covariate formula
 Par <- list()
 for (i in 2:length(formula)){
   Par[[i]] <- getPar0(model=m1, nbStates=3, formula = formula[[i]])
@@ -168,6 +178,7 @@ for (i in 2:length(formula)) {
 
 ############# 1B. CROZET  ###############
 
+# The exact same analysis from the previous section is ran for Crozet data
 
 ### LOAD IN TRACKS ####
 
@@ -179,14 +190,16 @@ nlevels(cro$ID) # 267
 
 #### As it takes a very long time (i.e days) to run on the full datasets - to test code we'll subset to 2 individuals per sex  ##### 
 
-males <- subset(cro, sex == "M",)
+set.seed(1) # setting seed only to get comparable results. For "real" randomization, you should delete this line
+
+males <- subset(cro, sex == "M")
 males$ID <- as.factor(as.character(males$ID))
-females <- subset(cro, sex == "F",)
+females <- subset(cro, sex == "F")
 females$ID <- as.factor(as.character(females$ID))
 m.ids <- sample(levels(males$ID), 2, replace = FALSE)
 f.ids <- sample(levels(females$ID), 2, replace = FALSE)
 ids <- c(m.ids, f.ids)
-cro <- subset(cro, ID %in% ids,)
+cro <- subset(cro, ID %in% ids)
 cro$sex <- as.factor(as.character(cro$sex))
 cro$ID <- as.factor(as.character(cro$ID))
 nlevels(cro$ID) # 4
@@ -245,7 +258,7 @@ save(m1, file = file.out)
 ####### SETTING UP FORMULA AND PAR0 FOR ALL COMBINATIONS OF MODELS ##########
 
 
-# The following code manually specifies each of 40 covariate combinations tested, which is detailed Methods section 2.5 of paper
+# The following code manually specifies each of 40 covariate combinations tested, which is detailed in section 2.5 of the paper
 formula <- list()	
 formula[[2]] <- ~ ws	
 formula[[3]] <- ~ ws + dir
@@ -334,13 +347,14 @@ for (i in 2:length(formula)) {
 ############# 2A. SOUTH GEORGIA ##########
 
 
-# iterate through each model set, load in models, output autocorrelation plots for step lenghts and turning angles, pseudo-residual and qq plots, extract model 
+# iterate through each model set, load in models, output autocorrelation plots for step lengths and turning angles, pseudo-residual and qq plots, extract model 
 # coefficients for each transition and plot, and paste out AIC table
 
 m.list <- list()
 out.df <- list()
 for (i in 1:length(formula)) {
   print(i)
+  par(mar=c(1,1,1,1)) # in case you have problems with the margins of the plots, this is a quick way to fix it
   file.in <- paste0("./Data_outputs/", paste0("SG_mod_", i, ".RData"))
   load(file = file.in)
   if (i == 1) { m.list[[i]] <- m1} else { m.list[[i]] <- model}
@@ -405,7 +419,7 @@ for (i in 1:length(formula)) {
   beta.df$Transitions <- as.factor(as.character(beta.df$Transitions))
   pd <- position_dodge(width=0.7)
   # removing intercept to plot
-  beta.df2 <- subset(beta.df, Covariates != "(Intercept)",)
+  beta.df2 <- subset(beta.df, Covariates != "(Intercept)")
   pl <- ggplot(beta.df2, aes(Covariates, Est)) + geom_hline(yintercept=0, linetype="dashed", size=1)+
     geom_point(aes(colour = Transitions),position=pd)+
     geom_errorbar(aes(ymin=Lwr, ymax=Upr, colour = Transitions), width=.8, position=pd) +theme_bw()
@@ -414,6 +428,7 @@ for (i in 1:length(formula)) {
   dev.copy(png, name.plot, width = 800, height = 500)
   dev.off()
 }
+# RJ: Tommy, I had 38 warnings related to missing values in geom_errorbar. Could you check why there are missing values and add a line about it? Probably because the coefficients had just one value... My guess is that momentuHMM is not computing confidence intervals for categorical variables. Could you please check if it's that and add a comment?
 all.out <- do.call(rbind, out.df)
 all.out <- all.out[order(all.out$AIC),]
 
@@ -438,6 +453,7 @@ m.list <- list()
 out.df <- list()
 for (i in 1:length(formula)) {
   print(i)
+  par(mar=c(1,1,1,1)) # in case you have problems with the margins of the plots, this is a quick way to fix it
   file.in <- paste0("./Data_outputs/", paste0("Cro_mod_", i, ".RData"))
   load(file = file.in)
   if (i == 1) { m.list[[i]] <- m1} else { m.list[[i]] <- model}
@@ -502,7 +518,7 @@ for (i in 1:length(formula)) {
   beta.df$Transitions <- as.factor(as.character(beta.df$Transitions))
   pd <- position_dodge(width=0.7)
   # removing intercept to plot
-  beta.df2 <- subset(beta.df, Covariates != "(Intercept)",)
+  beta.df2 <- subset(beta.df, Covariates != "(Intercept)")
   pl <- ggplot(beta.df2, aes(Covariates, Est)) + geom_hline(yintercept=0, linetype="dashed", size=1)+
     geom_point(aes(colour = Transitions),position=pd)+
     geom_errorbar(aes(ymin=Lwr, ymax=Upr, colour = Transitions), width=.8, position=pd) +theme_bw()
@@ -511,6 +527,7 @@ for (i in 1:length(formula)) {
   dev.copy(png, name.plot, width = 800, height = 500)
   dev.off()
 }
+# RJ: Same comment about the warnings here
 all.out <- do.call(rbind, out.df)
 all.out <- all.out[order(all.out$AIC),]
 
