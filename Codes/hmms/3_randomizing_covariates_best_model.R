@@ -1,8 +1,8 @@
 library(momentuHMM)
 library(plyr)
+library(ggplot2)
 
-
-# AIM OF SCRIPT - to run the "best" model but with covariate values reshuffled to test for over-parameterization
+# AIM OF SCRIPT - to run the "best" model but with covariate values reshuffled to test for over-parameterization (see more detailed description in README file and Appendix of the manuscript)
 
 
 
@@ -33,9 +33,9 @@ form <- ~ws:sex + ws + sex + lod	+ dir + ws:sex:dir + ws:dir
 # load in data from model
 gps <- model$data
 # subset male and female ids to later assign fake sexes
-male.sub <- subset(gps, sex == "M",)
+male.sub <- subset(gps, sex == "M")
 male.sub$ID <- as.factor(as.character(male.sub$ID))
-female.sub <- subset(gps, sex == "F",)
+female.sub <- subset(gps, sex == "F")
 female.sub$ID <- as.factor(as.character(female.sub$ID))
 nlevels(male.sub$ID) # 2
 nlevels(female.sub$ID) # 2
@@ -66,7 +66,11 @@ for (i in 1:n.iter)  {
 table(same_df$Sexes_same)
 # for reduced dataset (i.e. n = 4), this will be common, but not for full dataset 
 # you want to iterate again so that all are different from real dataset - i.e. you want all same_df$Sexes_same to be "FALSE"
-
+# RJ: What will be common???
+# RJ: Btw, this is what I got:
+# table(same_df$Sexes_same)
+# FALSE  TRUE 
+# 40    10 
 
 
 
@@ -85,7 +89,7 @@ concentration_0 <- c(52.97,  1.31,  51.27)
 anglePar0 <- c(location_0,concentration_0)
 
 
-######### 1B. RUNNING MODELS RANDOMIZING BY SEX #######
+######### 1B. RUNNING MODELS WITH RANDOMIZED SEX #######
 
 
 mod <- list()
@@ -95,8 +99,8 @@ for (i in 1:n.iter) {
   print(i)
   gps.l[[i]] <- gps
   # assign random sexes from fake sex dataframe above
-  sex.df <- subset(full.sex.df, Iter == i,)
-  random.f <- subset(sex.df, Sex == "F",)
+  sex.df <- subset(full.sex.df, Iter == i)
+  random.f <- subset(sex.df, Sex == "F")
   gps.l[[i]]$sex_r <- "M"
   gps.l[[i]]$sex_r[gps.l[[i]]$ID %in% random.f$Id] <- "F"
   gps.l[[i]]$sex_r <- as.factor(as.character(gps.l[[i]]$sex_r))
@@ -109,6 +113,7 @@ for (i in 1:n.iter) {
   dat <-prepData(dat, type= "LL", # longs and lats
                  coordNames = c("x", "y")) ## these are our names
    # artifact for zero step lengths
+   # the best approach is to use the zeromass parameter instead
   ind_zero <- which(dat$step == 0)
   if (length(ind_zero)>0){
     dat$step[ind_zero] <- runif(length(ind_zero))/10000
@@ -141,7 +146,6 @@ write.csv(all.AIC, out.path, row.names=T)
 
 ######### 1C. RUNNING MODELS RANDOMIZING BY WIND SPEED #######
 
-
 mod <- list()
 gps.l <- list()
 AIC.df <- list()
@@ -159,6 +163,7 @@ for (i in 1:n.iter) {
   dat <-prepData(dat, type= "LL", # longs and lats
                  coordNames = c("x", "y")) ## these are our names
   # artifact for zero step lengths
+  # the best approach is to use the zeromass parameter instead
   ind_zero <- which(dat$step == 0)
   if (length(ind_zero)>0){
     dat$step[ind_zero] <- runif(length(ind_zero))/10000
@@ -192,7 +197,6 @@ write.csv(all.AIC, out.path, row.names=T)
 
 ######### 1D. RUNNING MODELS RANDOMIZING BY LOD #######
 
-
 mod <- list()
 gps.l <- list()
 AIC.df <- list()
@@ -212,6 +216,7 @@ for (i in 1:n.iter) {
   dat <-prepData(dat, type= "LL", # longs and lats
                  coordNames = c("x", "y")) ## these are our names
     # artifact for zero step lengths
+  # the best approach is to use the zeromass parameter instead
   ind_zero <- which(dat$step == 0)
   if (length(ind_zero)>0){
     dat$step[ind_zero] <- runif(length(ind_zero))/10000
@@ -243,7 +248,6 @@ write.csv(all.AIC, out.path, row.names=T)
 
 ######### 1E. RUNNING MODELS RANDOMIZING BY WIND DIRECTION #######
 
-
 mod <- list()
 gps.l <- list()
 AIC.df <- list()
@@ -261,6 +265,7 @@ for (i in 1:n.iter) {
   dat <-prepData(dat, type= "LL", # longs and lats
                  coordNames = c("x", "y")) ## these are our names
     # artifact for zero step lengths
+  # the best approach is to use the zeromass parameter instead
   ind_zero <- which(dat$step == 0)
   if (length(ind_zero)>0){
     dat$step[ind_zero] <- runif(length(ind_zero))/10000
@@ -301,7 +306,7 @@ AIC.real <- AIC(best.mod)
 path.sex <- "./Data_outputs/SG_sex_randomized_AIC_table.csv"
 sex <- read.csv(file = path.sex, na.strings = "NA")
 path.ws <- "./Data_outputs/SG_ws_randomized_AIC_table.csv"
-sex <- read.csv(file = path.ws, na.strings = "NA")
+ws <- read.csv(file = path.ws, na.strings = "NA") 
 path.dir <- "./Data_outputs/SG_dir_randomized_AIC_table.csv"
 dir <- read.csv(file = path.dir, na.strings = "NA")
 path.lod <- "./Data_outputs/SG_dir_randomized_AIC_table.csv"
@@ -348,9 +353,9 @@ form <- ~ws:sex + ws + sex + lod	+ dir + ws:sex:dir + ws:dir
 # load in data from model
 gps <- model$data
 # subset male and female ids to later assign fake sexes
-male.sub <- subset(gps, sex == "M",)
+male.sub <- subset(gps, sex == "M")
 male.sub$ID <- as.factor(as.character(male.sub$ID))
-female.sub <- subset(gps, sex == "F",)
+female.sub <- subset(gps, sex == "F")
 female.sub$ID <- as.factor(as.character(female.sub$ID))
 nlevels(male.sub$ID) # 2
 nlevels(female.sub$ID) # 2
@@ -381,7 +386,11 @@ for (i in 1:n.iter)  {
 table(same_df$Sexes_same)
 # for reduced dataset (i.e. n = 4), this will be common, but not for full dataset 
 # you want to iterate again so that all are different from real dataset - i.e. you want all same_df$Sexes_same to be "FALSE"
-
+# RJ:
+# For the record, I get
+# table(same_df$Sexes_same)
+# FALSE  TRUE 
+# 39    11 
 
 
 
@@ -411,8 +420,8 @@ for (i in 1:n.iter) {
   print(i)
   gps.l[[i]] <- gps
   # assign random sexes from fake sex dataframe above
-  sex.df <- subset(full.sex.df, Iter == i,)
-  random.f <- subset(sex.df, Sex == "F",)
+  sex.df <- subset(full.sex.df, Iter == i)
+  random.f <- subset(sex.df, Sex == "F")
   gps.l[[i]]$sex_r <- "M"
   gps.l[[i]]$sex_r[gps.l[[i]]$ID %in% random.f$Id] <- "F"
   gps.l[[i]]$sex_r <- as.factor(as.character(gps.l[[i]]$sex_r))
@@ -425,6 +434,7 @@ for (i in 1:n.iter) {
   dat <-prepData(dat, type= "LL", # longs and lats
                  coordNames = c("x", "y")) ## these are our names
   # artifact for zero step lengths
+  # the best approach is to use the zeromass parameter instead 
   ind_zero <- which(dat$step == 0)
   if (length(ind_zero)>0){
     dat$step[ind_zero] <- runif(length(ind_zero))/10000
@@ -475,6 +485,7 @@ for (i in 1:n.iter) {
   dat <-prepData(dat, type= "LL", # longs and lats
                  coordNames = c("x", "y")) ## these are our names
   # artifact for zero step lengths
+  # the best approach is to use the zeromass parameter instead
   ind_zero <- which(dat$step == 0)
   if (length(ind_zero)>0){
     dat$step[ind_zero] <- runif(length(ind_zero))/10000
@@ -528,6 +539,7 @@ for (i in 1:n.iter) {
   dat <-prepData(dat, type= "LL", # longs and lats
                  coordNames = c("x", "y")) ## these are our names
   # artifact for zero step lengths
+  # the best approach is to use the zeromass parameter instead
   ind_zero <- which(dat$step == 0)
   if (length(ind_zero)>0){
     dat$step[ind_zero] <- runif(length(ind_zero))/10000
@@ -577,6 +589,7 @@ for (i in 1:n.iter) {
   dat <-prepData(dat, type= "LL", # longs and lats
                  coordNames = c("x", "y")) ## these are our names
   # artifact for zero step lengths
+  # the best approach is to use the zeromass parameter instead
   ind_zero <- which(dat$step == 0)
   if (length(ind_zero)>0){
     dat$step[ind_zero] <- runif(length(ind_zero))/10000
@@ -617,7 +630,7 @@ AIC.real <- AIC(best.mod)
 path.sex <- "./Data_outputs/Cro_sex_randomized_AIC_table.csv"
 sex <- read.csv(file = path.sex, na.strings = "NA")
 path.ws <- "./Data_outputs/Cro_ws_randomized_AIC_table.csv"
-sex <- read.csv(file = path.ws, na.strings = "NA")
+ws <- read.csv(file = path.ws, na.strings = "NA")
 path.dir <- "./Data_outputs/Cro_dir_randomized_AIC_table.csv"
 dir <- read.csv(file = path.dir, na.strings = "NA")
 path.lod <- "./Data_outputs/Cro_dir_randomized_AIC_table.csv"
