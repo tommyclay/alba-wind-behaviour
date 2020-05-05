@@ -10,6 +10,7 @@ library(plyr)
 
 
 # load in best models for each site # remember these models have been trained on samples in the previous scripts
+# For the manuscript, it was model 30
 file.in <- paste0("./Data_outputs/", paste0("SG_mod_", 30, ".RData"))
 load(file = file.in)
 m.sg <- model

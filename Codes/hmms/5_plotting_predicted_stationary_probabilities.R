@@ -9,7 +9,8 @@ library(momentuHMM)
 ##### LOAD IN MODEL OUTPUTS #####
 
 
-# load in best models for each site #
+# load in best models for each site 
+# For the manuscript, it was model 30
 file.in <- paste0("./Data_outputs/", paste0("SG_mod_", 30, ".RData"))
 load(file = file.in)
 m.sg <- model
@@ -26,12 +27,8 @@ m.cro <- model
 plotStationary(m.sg,plotCI = TRUE)
 plotStationary(m.cro,plotCI = TRUE)
 
-
-##### ROCIO TO CHECK - function below makes sense ####
-
-
 # plotStationary() function only allows you to predict for a row of covariate values within the plotting architecture of momentuhmm
-# bespoke function written by R. Joo in April 2019 to modify internal functions to manually extract confidence intervals around stationary probabilities
+# To extract the confidence intervals of the stationary transition probabilities, R. Joo wrote a function based on momentuHMM internal functions (in Apr. 2019)
 # for a range of specified covariates and output to plot in ggplot
 
 ci.stationary <- function(model, cov, alpha) {
@@ -45,17 +42,17 @@ ci.stationary <- function(model, cov, alpha) {
   
   formula <- model2$conditions$formula # for covariates
   newForm <- momentuHMM:::newFormulas(formula, nbStates) # a formula for each state transition
-  newformula <- newForm$newformula # seems to be the same thing as formula
+  newformula <- newForm$newformula 
   
   nbCovs <- ncol(model.matrix(newformula, model2$data)) - 1 # model.matrix gives values of covariate terms of the formula for each observation
   # in my opinion, nbCovs gives exactly the same number of terms as formula (-1 is minus intercept)
   
   gamInd <- (length(model2$mod$estimate) - (nbCovs + 1) * nbStates * (nbStates - 1) 
-             + 1):(length(model2$mod$estimate)) - ncol(model2$covsDelta) * (nbStates - 1) * (!model2$conditions$stationary) # if it's stationary there wouldn't be any covariates
+             + 1):(length(model2$mod$estimate)) - ncol(model2$covsDelta) * (nbStates - 1) * (!model2$conditions$stationary) # if the model is stationary there wouldn't be any covariates
   # here we just enumerate parameters leaving out the first ones which are step and angle related, and the last ones which are delta related
   
   rawCovs <- model2$rawCovs
-  # changing order of variables tomatch with rawdata
+  # changing order of variables to match with raw data
   rawCovs <- rawCovs[,order(names(rawCovs))]
   tempCovs <- cov
   tempCovs <- tempCovs[,sort(names(rawCovs))]
@@ -64,14 +61,13 @@ ci.stationary <- function(model, cov, alpha) {
   for (i in which(unlist(lapply(rawCovs, is.factor)))) {
     tempCovs[[i]] <- factor(tempCovs[[i]], levels = levels(rawCovs[, 
                                                                    i])) 
-    # tmpcovs[i] <- as.character(tmpcovs[[i]]) # and now converting this to character
   }
   tmpSplineInputs <- momentuHMM:::getSplineFormula(newformula, model2$data, 
                                                    tempCovs) # just a format for spline use later
   desMat <- model.matrix(tmpSplineInputs$formula, data = tmpSplineInputs$covs) # tmpSplineInputs$covs is tempCovs
   # model.matrix gives the design matrix for the formula in the argument
   
-  probs <- stationary(model2, covs=desMat) # the stationary probability is computed based on desMat, which has only a range of values for one of the covariates
+  probs <- as.data.frame(stationary(model2, covs=desMat)) # the stationary probability is computed based on desMat, which has only a range of values for one of the covariates
   
   for(state in 1:nbStates) {
     dN <- t(apply(desMat, 1, function(x)
@@ -102,7 +98,7 @@ ci.stationary <- function(model, cov, alpha) {
 
 
 min(m.sg$data$ws)
-#0.08082135
+#0.08082135 # these values correspond to the full dataset
 min(m.cro$data$ws)
 # 0.04510045
 max(m.sg$data$ws)
@@ -179,7 +175,7 @@ ggplot(stat.df, aes(ws, prob)) +facet_wrap(~site)+
 
 
 min(m.sg$data$dir)
-# 0.02182379
+# 0.02182379 # reference values for the whole dataset
 min(m.cro$data$dir)
 # 0.001087263
 max(m.sg$data$dir)
