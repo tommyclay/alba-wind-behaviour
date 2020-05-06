@@ -7,11 +7,7 @@ Thomas A. Clay, Rocío Joo, Henri Weimerskirch, Richard A. Phillips, Olivier den
 
 The following repository contains codes and data to reproduce main results of the paper published in the Journal of Animal Ecology.
 
-There are 4 folders: Codes, Data_inputs, Data_outputs, and Plots. 
-
-
-    [RJ]: # (Do you really need to add Data_outputs and Plots?)
-
+There are 2 folders: "Codes" and "Data_inputs". The provided code should create "Data_outputs" and "Plots" folders. 
 
 For now, this repository can be cited using its github link (https://github.com/tommyclay/alba-wind-behaviour), but will soon have a DOI.
  
@@ -42,10 +38,7 @@ In the hmms sub-folder:
 These are the datasets used in the analysis, in a format that makes it straightforward to fit the mixed models and HMMs.
 
 
-    [RJ2]: # (Tommy, the description in the first file is not clear. Are these average wind values?)
-
-
-- **BothSites_forwindexperienced.csv**: data to load into the wind_experienced_analysis_plotting.r code. The columns are: 
+- **BothSites_forwindexperienced.csv**: data (each value corresponds to a tracking location) to load into the wind_experienced_analysis_plotting.r code. The columns are: 
     - ID - factor encoding individual bird identity; 
     - TripID - factor encoding trip identity; 
     - Site - factor with two levels: "Crozet" or "South Georgia"; 
