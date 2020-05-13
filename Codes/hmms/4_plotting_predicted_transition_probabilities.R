@@ -271,7 +271,7 @@ all.df$sex <- as.factor(as.character(all.df$sex))
 ggplot(all.df, aes(x = wind, y=mean)) + facet_wrap(~site)+
   geom_ribbon(size = 1.3, aes(ymin=lower_bound, ymax=upper_bound, fill = sex), alpha=0.15) + 
   geom_line(size = 1.3, aes(linetype = sex)) + 
-  ylim(0.5, 1)+
+  ylim(0, 0.5)+
   theme_bw() + #ylab("Transition probability")+
   scale_x_continuous(limits=c(0, 23)) + #xlab("Wind speed (ms-1)")+
   theme(axis.text.x=element_text(size=16), 
@@ -493,7 +493,7 @@ all.df$sex <- as.factor(as.character(all.df$sex))
 ggplot(all.df, aes(x = wind, y=mean)) + facet_wrap(~site)+
   geom_ribbon(size = 1.3, aes(ymin=lower_bound, ymax=upper_bound, fill = sex), alpha=0.15) + 
   geom_line(size = 1.3, aes(linetype = sex)) + 
-  ylim(0.5, 1)+ 
+  ylim(0, 0.5)+ 
   theme_bw() + #ylab("Transition probability")+
   scale_x_continuous(limits=c(0, 23)) + #xlab("Wind speed (ms-1)")+
   theme(axis.text.x=element_text(size=16), 
@@ -1367,9 +1367,9 @@ all.df$wind_cat <- as.factor(as.character(all.df$wind_cat))
 
 #### 3C. SUMMARIZING PROBABILITIES FOR EACH WIND SPEED CATEGORY #####
 
-wind_sum <- ddply(all.df,.(sex, site, wind_cat), summarize, w_mean = mean(mean), w_low = mean(lower_bound), w_upp = mean(upper_bound))
+wind_sum <- ddply(all.df,.(sex, site, wind_cat), summarize, p_mean = mean(mean), p_low = mean(lower_bound), p_upp = mean(upper_bound))
 wind_sum
-#     sex        site wind_cat     w_mean      w_low      w_upp
+#     sex        site wind_cat     p_mean      p_low      p_upp
 # 1    F        Crozet        1 0.10173144 0.09653677 0.10717782
 # 2    F        Crozet        2 0.15069448 0.14334506 0.15835538
 # 3    F        Crozet        3 0.23182702 0.21176285 0.25317095

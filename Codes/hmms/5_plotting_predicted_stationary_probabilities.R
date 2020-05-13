@@ -52,7 +52,7 @@ ci.stationary <- function(model, cov, alpha) {
   # here we just enumerate parameters leaving out the first ones which are step and angle related, and the last ones which are delta related
   
   rawCovs <- model2$rawCovs
-  # changing order of variables tomatch with rawdata
+  # changing order of variables tomatch with raw data
   rawCovs <- rawCovs[,order(names(rawCovs))]
   tempCovs <- cov
   tempCovs <- tempCovs[,sort(names(rawCovs))]
@@ -61,14 +61,13 @@ ci.stationary <- function(model, cov, alpha) {
   for (i in which(unlist(lapply(rawCovs, is.factor)))) {
     tempCovs[[i]] <- factor(tempCovs[[i]], levels = levels(rawCovs[, 
                                                                    i])) 
-    # tmpcovs[i] <- as.character(tmpcovs[[i]]) # and now converting this to character
   }
   tmpSplineInputs <- momentuHMM:::getSplineFormula(newformula, model2$data, 
                                                    tempCovs) # just a format for spline use later
   desMat <- model.matrix(tmpSplineInputs$formula, data = tmpSplineInputs$covs) # tmpSplineInputs$covs is tempCovs
   # model.matrix gives the design matrix for the formula in the argument
   
-  probs <- stationary(model2, covs=desMat) # the stationary probability is computed based on desMat, which has only a range of values for one of the covariates
+  probs <- as.data.frame(stationary(model2, covs=desMat)) # the stationary probability is computed based on desMat, which has only a range of values for one of the covariates
   
   for(state in 1:nbStates) {
     dN <- t(apply(desMat, 1, function(x)
@@ -368,7 +367,7 @@ stat.sg.d$upper <- as.data.frame.list(colMeans(rbind(stat.sg.d.m$upper, stat.sg.
 
 # output dataframe
 
-stat.df <- data.frame(dir = rep(cov.sg.l$dir, 4),
+stat.df <- data.frame(dir = rep(cov.sg.l.m$dir, 4),
                       prob = c(s.cro.l$travel, s.cro.l$search, s.cro.l$rest,
                                s.cro.d$travel, s.cro.d$search, s.cro.d$rest,
                                s.sg.l$travel, s.sg.l$search, s.sg.l$rest,
@@ -381,9 +380,9 @@ stat.df <- data.frame(dir = rep(cov.sg.l$dir, 4),
                               stat.cro.d[[2]]$travel, stat.cro.d[[2]]$search, stat.cro.d[[2]]$rest,
                               stat.sg.l[[2]]$travel, stat.sg.l[[2]]$search, stat.sg.l[[2]]$rest,
                               stat.sg.d[[2]]$travel, stat.sg.d[[2]]$search, stat.sg.d[[2]]$rest),
-                      state = rep(rep(c("travel", "search", "rest"), each = length(cov.sg.l$ws)), 4),
-                      lod = rep(c("L", "D", "L", "D"), each = length(cov.sg.l$ws)*3),
-                      site = rep(c("Crozet", "South Georgia"), each = length(cov.sg.l$ws)*6))
+                      state = rep(rep(c("travel", "search", "rest"), each = length(cov.sg.l.m$ws)), 4),
+                      lod = rep(c("L", "D", "L", "D"), each = length(cov.sg.l.m$ws)*3),
+                      site = rep(c("Crozet", "South Georgia"), each = length(cov.sg.l.m$ws)*6))
 
 # plot
 
