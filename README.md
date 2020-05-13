@@ -32,6 +32,26 @@ In the hmms sub-folder:
 
 * The combination of a large dataset and a relatively long list of potential covariates mean  these scripts take several days to run. For that reason, most of the codes contain lines to select random subsets of the data and do all the calculations with the subset. We recommend though that to fully reproduce the results, that analyses be conducted on the full dataset.
 
+# General statement - please read before using the data
+
+The attached archived file(s) contain data derived from long-term field projects involving monitoring and tracking of individual wandering albatrosses at Bird Island (South Georgia) at Possession Island (Crozet Islands).
+
+This is a request to please let us know if you use them.  Several people have spent many years involved in the data collection and processing.
+
+If you plan to analyse the data, there are a number of reasons why it would be very helpful if you could contact Richard Phillips (raphil@bas.ac.uk) or Henri Weimerskirch (henri.weimerskirch@cebc.cnrs.fr) before doing so:
+
+1)            Occasionally we discover and correct errors in the data.
+
+2)            The data are complex and workers who do not know the study system are likely to benefit from advice on interpretation.
+
+3)            At any one time, other people within the project or collaborators may be analysing data from this project. Someone else may already be conducting the analysis that you have in mind and it is desirable to prevent duplication of effort.
+
+4)            In order to maintain funding for the project and for further analyses, every few years we submit proposals to funding agencies. It is therefore very helpful for those running the project to know which data analyses are in progress elsewhere.
+
+If you are interested in analysing the detailed project data in any depth, you may find it helpful to have access to a larger dataset than the files available here.  If so, we are always open to further collaboration.
+
+The individual bird identities have been recoded and should therefore not be linked with data archived from other papers on this study population.
+
 
 # Input data
  
