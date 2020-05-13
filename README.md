@@ -5,7 +5,7 @@ Thomas A. Clay, Rocío Joo, Henri Weimerskirch, Richard A. Phillips, Olivier den
 
 ## Overview 
 
-The following repository contains codes and data to reproduce main results of the paper published in the Journal of Animal Ecology.
+The following repository contains codes and data to reproduce the main results of the paper, published in the Journal of Animal Ecology.
 
 There are 2 folders: "Codes" and "Data_inputs". The provided code should create "Data_outputs" and "Plots" folders. 
 
@@ -24,18 +24,18 @@ In the hmms sub-folder:
 
 - **2_hmm_run_all_models.r**: Since we had a set of possible covariates that could have an effect in the transition probabilities between states, here we ran all combinations of HMMs based on covariates specified in Section 2.5 of Methods. Codes for all model outputs, including AIC tables, and autocorrelation and goodness-of-fit plots, are included in this file.
 
-- **3_randomizing_covariates_best_model.r**: This code is associated to calculations described in the Appendix S3. Overall, we wanted to double-check that the effect of the covariates of the best model selected in part 2, were indeed significant. For that purpose, we run HMM models with the covariate configuration that was selected as "the best" from the previous code, but reshuffling the values of the covariates, and compared there performance in relation to the "best model".
+- **3_randomizing_covariates_best_model.r**: This code is related to calculations described in the Appendix S3. Overall, we wanted to double-check that the effect of the covariates of the best model selected in part 2, were indeed significant. For that purpose, we run HMM models with the covariate configuration that was selected as "the best" from the previous code, but reshuffling the values of the covariates, and compared model performance to the "best model".
 
 - **4_plotting_predicted_transition_probabilities.r**: Here we use the model from part 2 to plot and summarize the transition probabilities. These results correspond to Figure 4 and Table 3 in the manuscript.
 
 - **5_plotting_predicted_stationary_probabilities.r**: Here we use the model from part 2 to plot the stationary probabilities corresponding to Figure 5 in the manuscript.
 
-* The combination of a large dataset and a relatively long list of potential covariates would make these scripts take several days to run. For that reason, most of the codes contain lines to select random subsets of the data and do all the calculations with the subset.
+* The combination of a large dataset and a relatively long list of potential covariates mean  these scripts take several days to run. For that reason, most of the codes contain lines to select random subsets of the data and do all the calculations with the subset. We recommend though that to fully reproduce the results, that analyses be conducted on the full dataset.
 
 
 # Input data
  
-These are the datasets used in the analysis, in a format that makes it straightforward to fit the mixed models and HMMs.
+These are the datasets used in the analysis, in a straightforward format allowing the fitting of mixed models and HMMs.
 
 - **BothSites_forwindexperienced.csv**: data, with each value corresponding to a tracking location, to load into the wind_experienced_analysis_plotting.r code. The columns are: 
     - ID - factor encoding individual bird identity; 
