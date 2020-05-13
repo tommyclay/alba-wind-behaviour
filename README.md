@@ -34,9 +34,9 @@ In the hmms sub-folder:
 
 # General statement (please read before using the data)
 
-The attached archived file(s) contain data derived from long-term field projects involving monitoring and tracking of individual wandering albatrosses at Bird Island (South Georgia) at Possession Island (Crozet Islands).
+The attached archived file(s) contain data derived from long-term field projects involving monitoring and tracking of individual wandering albatrosses at Bird Island (South Georgia) and Possession Island (Crozet Islands).
 
-This is a request to please let us know if you use them.  Several people have spent many years involved in the data collection and processing.
+This is a request to please let us know if you use them. Several people have spent many years involved in the data collection and processing.
 
 If you plan to analyse the data, there are a number of reasons why it would be very helpful if you could contact Richard Phillips (raphil@bas.ac.uk) or Henri Weimerskirch (henri.weimerskirch@cebc.cnrs.fr) before doing so:
 
@@ -45,7 +45,7 @@ If you plan to analyse the data, there are a number of reasons why it would be v
 - At any one time, other people within the project or collaborators may be analysing data from this project. Someone else may already be conducting the analysis that you have in mind and it is desirable to prevent duplication of effort.
 - In order to maintain funding for the project and for further analyses, every few years we submit proposals to funding agencies. It is therefore very helpful for those running the project to know which data analyses are in progress elsewhere.
 
-If you are interested in analysing the detailed project data in any depth, you may find it helpful to have access to a larger dataset than the files available here.  If so, we are always open to further collaboration.
+If you are interested in analysing the detailed project data in any depth, you may find it helpful to have access to a larger dataset than the files available here. If so, we are always open to further collaboration.
 
 The individual bird identities have been recoded and should therefore not be linked with data archived from other papers on this study population.
 
@@ -71,7 +71,6 @@ These are the datasets used in the analysis, in a straightforward format allowin
     - ws - numeric value of wind speed for tracking location; 
     - dir - numeric value of wind direction relative to bird trajectory for each location; 
     - lod - factor with two levels: "L" (daylight) or "D" (darkness).
-
 
 - **GPS_SouthGeorgia_2012.csv**: South Georgia data to load into hmm codes. Columns are:
     - ID - factor encoding individual trip identity; 
