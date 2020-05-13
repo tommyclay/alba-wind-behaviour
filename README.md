@@ -9,7 +9,7 @@ The following repository contains codes and data to reproduce main results of th
 
 There are 2 folders: "Codes" and "Data_inputs". The provided code should create "Data_outputs" and "Plots" folders. 
 
-For now, this repository can be cited using its github link (https://github.com/tommyclay/alba-wind-behaviour), but will soon have a DOI.
+This repository can be cited through its Zenodo link (Clay et al. 2020; https://zenodo.org/record/3824065#.XrvM-mhKg2x).
  
 
 ## Codes
