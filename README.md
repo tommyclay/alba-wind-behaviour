@@ -24,11 +24,11 @@ In the hmms sub-folder:
 
 - **2_hmm_run_all_models.r**: Since we had a set of possible covariates that could have an effect in the transition probabilities between states, here we ran all combinations of HMMs based on covariates specified in Section 2.5 of Methods. Codes for all model outputs, including AIC tables, and autocorrelation and goodness-of-fit plots, are included in this file.
 
-- **3_randomizing_covariates_best_model.r**: This code is related to calculations described in the Appendix S3. Overall, we wanted to double-check that the effect of the covariates of the best model selected in part 2, were indeed significant. For that purpose, we run HMM models with the covariate configuration that was selected as "the best" from the previous code, but reshuffling the values of the covariates, and compared model performance to the "best model".
+- **3_randomizing_covariates_best_model.r**: This code is related to calculations described in the Appendix S3. Overall, we wanted to double-check that the effect of the covariates of the best model selected in script 2 were indeed significant. For that purpose, we run HMMs with the covariate configuration that was selected as "the best" from the previous code, but reshuffling the values of the covariates, and compared model performance to the "best model".
 
-- **4_plotting_predicted_transition_probabilities.r**: Here we use the model from part 2 to plot and summarize the transition probabilities. These results correspond to Figure 4 and Table 3 in the manuscript.
+- **4_plotting_predicted_transition_probabilities.r**: Here we use the best model from script 2 to plot and summarize the transition probabilities. These results correspond to Figure 4 and Table 3 in the manuscript.
 
-- **5_plotting_predicted_stationary_probabilities.r**: Here we use the model from part 2 to plot the stationary probabilities corresponding to Figure 5 in the manuscript.
+- **5_plotting_predicted_stationary_probabilities.r**: Here we use the best model from script 2 to plot the stationary probabilities corresponding to Figure 5 in the manuscript.
 
 * The combination of a large dataset and a relatively long list of potential covariates mean  these scripts take several days to run. For that reason, most of the codes contain lines to select random subsets of the data and do all the calculations with the subset. We recommend though that to fully reproduce the results, that analyses be conducted on the full dataset.
 
@@ -63,7 +63,7 @@ These are the datasets used in the analysis, in a straightforward format allowin
     - WindSp - numeric values of wind speed for each tracking location; 
     - WindDir - numeric values of wind direction for each tracking location.
 
-- **GPS_Crozet_2010-2016.csv**: Crozet data to load into hmm codes. Columns are: 
+- **GPS_Crozet_2010-2016.csv**: Crozet data to load into HMM codes. Columns are: 
     - ID - factor encoding individual trip identity; 
     - sex - factor with two levels: "F" (female) or "M" (male); 
     - x - longitude; 
