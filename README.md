@@ -5,7 +5,7 @@ Thomas A. Clay, Rocío Joo, Henri Weimerskirch, Richard A. Phillips, Olivier den
 
 ## Overview 
 
-The following repository contains codes and data to reproduce the main results of the paper, published in the Journal of Animal Ecology 2020. DOI: 10.1111/1365-2656.13267.
+The following repository contains codes and data to reproduce the main results of the paper, published in the Journal of Animal Ecology (2020). DOI: 10.1111/1365-2656.13267.
 
 There are 2 folders: "Codes" and "Data_inputs". The provided code should create "Data_outputs" and "Plots" folders. 
 
