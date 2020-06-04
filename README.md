@@ -1,11 +1,11 @@
-# Sex-specific effects of wind on the flight decisions of a sexually-dimorphic soaring bird
+# Sex-specific effects of wind on the flight decisions of a sexually dimorphic soaring bird
 
 Thomas A. Clay, Rocío Joo, Henri Weimerskirch, Richard A. Phillips, Olivier den Ouden, Mathieu Basille, Susana Clusella-Trullas, Jelle D. Assink, Samantha C. Patrick
 
 
 ## Overview 
 
-The following repository contains codes and data to reproduce the main results of the paper, published in the Journal of Animal Ecology.
+The following repository contains codes and data to reproduce the main results of the paper, published in the Journal of Animal Ecology 2020. DOI: 10.1111/1365-2656.13267.
 
 There are 2 folders: "Codes" and "Data_inputs". The provided code should create "Data_outputs" and "Plots" folders. 
 
